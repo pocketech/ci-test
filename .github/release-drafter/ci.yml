@@ -1,4 +1,6 @@
 _extends: bbti:.github/release-drafter/base.yml
+name-template: ci
+tag-template: ci
 tag-prefix: $TAG_PREFIX
 include-labels:
   - "scope:ci"
