@@ -44,7 +44,7 @@ jobs:
       - name: Draft CI release
         uses: release-drafter/release-drafter@v6
         with:
-          config-name: release-drafter/lp.yml
+          config-name: release-drafter/ci.yml
           tag: ci-${{ matrix.number }}/${{ steps.calver.outputs.version }}
           name: ci-${{ matrix.number }}/${{ steps.calver.outputs.version }}
           version: ci-${{ matrix.number }}/${{ steps.calver.outputs.version }}
