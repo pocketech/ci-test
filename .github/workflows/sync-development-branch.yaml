@@ -17,6 +17,9 @@ jobs:
   create_pr_from_hotfix:
     if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'hotfix/')
     runs-on: ubuntu-latest
+    permissions:
+      contents: "write"
+      pull-requests: "write"
     timeout-minutes: 5
     steps:
       - name: Checkout
@@ -32,6 +35,9 @@ jobs:
   create_pr_from_bugfix:
     if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'bugfix/')
     runs-on: ubuntu-latest
+    permissions:
+      contents: "write"
+      pull-requests: "write"
     timeout-minutes: 5
     steps:
       - name: Checkout
