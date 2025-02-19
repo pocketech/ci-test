@@ -1,0 +1,45 @@
+name: Create PR to Sync Development with Hotfix/Bugfix Branches
+
+on:
+  pull_request:
+    branches:
+      - main
+      - release/*
+    types: [closed]
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  create_pr_from_hotfix:
+    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'hotfix/')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create PR to sync development with hotfix
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr create --base development --head "${GITHUB_HEAD_REF}" --title "Sync development with hotfix" --body "PR created by GithubActions"
+
+  create_pr_from_bugfix:
+    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'bugfix/')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create PR to sync development with bugfix
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr create --base development --head "${GITHUB_HEAD_REF}" --title "Sync development with bugfix" --body "PR created by GithubActions"
