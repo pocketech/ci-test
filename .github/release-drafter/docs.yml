@@ -1,0 +1,7 @@
+_extends: ci-test:.github/release-drafter/base.yml
+name-template: docs@$RESOLVED_VERSION
+tag-template: docs@$RESOLVED_VERSION
+tag-prefix: docs@
+include-labels:
+  - "scope:docs"
+  - "scope:shared"

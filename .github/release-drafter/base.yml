@@ -1,0 +1,33 @@
+categories:
+  - title: "🚀 Features"
+    labels:
+      - "enhancement"
+
+  - title: "✨ Improvements"
+    labels:
+      - "improvement"
+
+  - title: "🐛 Bug Fixes"
+    labels:
+      - "bug"
+
+exclude-labels:
+  - "skip-changelog"
+
+version-resolver:
+  major:
+    labels:
+      - "semver:major"
+  minor:
+    labels:
+      - "enhancement"
+      - "improvement"
+  patch:
+    labels:
+      - "bug"
+  default: patch
+
+template: |
+  ## Changes
+
+  $CHANGES
