@@ -25,3 +25,7 @@ bug:
 release:
   - head-branch: ["^release/"]
   - base-branch: ["master"]
+
+skip-changelog:
+  - head-branch: ["^release/"]
+  - base-branch: ["master"]
