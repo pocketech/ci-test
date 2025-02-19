@@ -1,0 +1,7 @@
+_extends: ci-test:.github/release-drafter/base.yml
+name-template: web@$RESOLVED_VERSION
+tag-template: web@$RESOLVED_VERSION
+tag-prefix: web@
+include-labels:
+  - "scope:web"
+  - "scope:shared"

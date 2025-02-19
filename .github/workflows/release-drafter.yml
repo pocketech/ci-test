@@ -1,0 +1,53 @@
+name: Release Drafter
+
+on:
+  push:
+    branches:
+      - main
+
+permissions: {}
+
+jobs:
+  draft-release-using-semver:
+    permissions:
+      contents: write
+      pull-requests: read
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        file-name: [web, docs]
+    steps:
+      - name: Draft ${{ matrix.file-name }} release
+        uses: release-drafter/release-drafter@v6
+        with:
+          config-name: release-drafter/${{ matrix.file-name }}.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  draft-release-using-calver:
+    permissions:
+      contents: write
+      pull-requests: read
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        number: [one, two, three]
+    steps:
+      - name: Generate CalVer version
+        id: calver
+        run: |
+          VERSION=$(date "+%Y%m%d-%H%M") || exit 1
+          export VERSION
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "Version set to ${VERSION}"
+
+      - name: Draft CI release
+        uses: release-drafter/release-drafter@v6
+        with:
+          config-name: release-drafter/lp.yml
+          tag: ci-${{ matrix.number }}/${{ steps.calver.outputs.version }}
+          name: ci-${{ matrix.number }}/${{ steps.calver.outputs.version }}
+          version: ci-${{ matrix.number }}/${{ steps.calver.outputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_PREFIX: ci-${{ matrix.number }}/
