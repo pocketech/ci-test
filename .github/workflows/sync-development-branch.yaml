@@ -22,36 +22,23 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
 
-  create_pr_from_hotfix:
-    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'hotfix/')
+  create_pr_from_main:
+    if: >-
+      github.event.pull_request.merged == true &&
+      startsWith(github.head_ref, 'hotfix/') &&
+      github.base_ref == 'main'
     runs-on: ubuntu-latest
     permissions:
       contents: "write"
       pull-requests: "write"
     timeout-minutes: 5
-    env:
-      BRANCH_NAME: sync-development-with-hotfix
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: main
 
-      - name: Configure Git
-        env:
-          ACTOR: github-actions[bot]
-        # Use the GitHub Actions bot as the committer @see https://github.com/orgs/community/discussions/26560#discussioncomment-3531273
-        run: |
-          git config --global user.name ${{ env.ACTOR }}
-          git config --global user.email "41898282+${{ env.ACTOR }}@users.noreply.github.com"
-  
-      - name: Create a branch for syncing development with hotfix
-        run: |
-          git switch -c ${{ env.BRANCH_NAME }} main
-          git push origin ${{ env.BRANCH_NAME }}
-
-      - name: Create PR to sync development with hotfix
+      - name: Create PR to sync development with main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh pr create --base development --head ${{ env.BRANCH_NAME }} --title "Sync development with hotfix" --body "PR created by GithubActions"
+        run: gh pr create --base development --head "${GITHUB_BASE_REF}" --title "Sync development with main" --body "PR created by GithubActions"
