@@ -22,11 +22,11 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
 
-  create_pr_from_master:
+  create_pr_from_main:
     if: >-
       github.event.pull_request.merged == true &&
       startsWith(github.head_ref, 'hotfix/') &&
-      github.base_ref == 'master'
+      github.base_ref == 'main'
     runs-on: ubuntu-latest
     permissions:
       contents: "write"
@@ -38,7 +38,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Create PR to sync development with master
+      - name: Create PR to sync development with main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh pr create --base development --head "${GITHUB_BASE_REF}" --title "Sync development with master" --body "PR created by GithubActions"
+        run: gh pr create --base development --head "${GITHUB_BASE_REF}" --title "Sync development with main" --body "PR created by GithubActions"
